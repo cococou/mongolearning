@@ -1,0 +1,13 @@
+#connect
+cd C:\D\software\mongodb\bin
+mongod.exe --dbpath "C:\D\software\mongodb\data\db" --logpath "C:\D\software\mongodb\data\log\MongoDB.log" --install --serviceName "MongoDB"
+net start MongoDB
+#close connect
+cd C:\D\software\mongodb\bin
+net stop MongoDB
+mongod.exe --dbpath "C:\D\software\mongodb\data\db" --logpath "C:\D\software\mongodb\data\log\MongoDB.log" --remove --serviceName "MongoDB" #close the process
+
+#go to db
+mongo.exe MongoDB shell # 
+>>
+>>
