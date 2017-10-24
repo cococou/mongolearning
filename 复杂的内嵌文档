@@ -1,6 +1,6 @@
 ###操作符###
 $elemMatch
-
+_id 是默认返回的
 
 ###upload data###
 db.sc.remove({})
@@ -42,5 +42,10 @@ db.sc.find()
 ###
 #下面的操作将查询邮政编码键值是63109的所有文档。 $elemMatch操作符将返回 students数组中的第一个匹配条件（内嵌文档的school键且值为102）的元素。
 db.sc.find( { zipcode: 63109 },{ students: { $elemMatch: { school: 102 } } } ); #两个条件是一个或的返回式，并且只返回后一个匹配字段
-db.sc.find( { students: { $elemMatch: { school: 102 } } )
+db.sc.find( { students: { $elemMatch: { school: 102 } } ) #返回该字段所有条款，school实在student的结构下
+db.sc.find( { students: { $elemMatch: { school: 102 }} ,zipcode: 63109} ) # 在同一个字典下是and的关系，字典并列是or的关系
+
+#and 、or #无$elemMatch
+db.users.find({name:'coco'},{age:27}) #or ,返回唯一码_id 和 最后一个匹配条件 age
+db.users.find({name:'coco',age:27}) # and , 返回所有字段
 
