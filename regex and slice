@@ -1,0 +1,26 @@
+####操作符####
+#$regex  $option $slice $where
+
+db.users.find( { name: /.ing$/i } );                                #查询name键值以“ing”结尾的文档,i大小写不敏感,与下面同意
+db.users.find( { name: { $regex: '.ing', $options: 'i' } } );       
+#option
+                            i  　如果设置了这个修饰符，模式中的字母会进行大小写不敏感匹配。
+                            m   默认情况下，PCRE 认为目标字符串是由单行字符组成的(然而实际上它可能会包含多行).如果目标字符串 中没有 "\n"字符，或者模式中没有出现“行首”/“行末”字符，设置这个修饰符不产生任何影响。
+                            s    如果设置了这个修饰符，模式中的点号元字符匹配所有字符，包含换行符。如果没有这个修饰符，点号不匹配换行符。
+                            x    如果设置了这个修饰符，模式中的没有经过转义的或不在字符类中的空白数据字符总会被忽略，并且位于一个未转义的字符类外部的#字符和下一个换行符之间的字符也被忽略。 这个修饰符使被编译模式中可以包含注释。 注意：这仅用于数据字符。 空白字符 还是不能在模式的特殊字符序列中出现，比如序列 。
+
+#查出文档banana等于peach键值的文档，四种方法，但是注意少用where，影响速度
+db.fruit.insert({"apple":1, "banana": 4, "peach" : 4})
+db.fruit.insert({"apple":3, "banana": 3, "peach" : 4})
+db.fruit.find( { $where: "this.banana == this.peach" } )
+db.fruit.find( { $where: "obj.banana == obj.peach" } )
+db.fruit.find( { $where: function() { return (this.banana == this.peach) } } )
+db.fruit.find( { $where: function() { return obj.banana == obj.peach; } } )
+
+#返回元素小于等于1的元素的个数
+db.fruit.remove({})
+db.fruit.insert({"apple":1, "banana": 4, "peach" : [1,2,3,4,5,6,7]})
+db.fruit.find( {}, { peach: { $slice: 1 } } );   #返回的是前一个元素 [1]
+db.fruit.find( {}, { peach: { $slice: -1 } } );  #返回后一个元素 [7]
+db.fruit.find( {}, { peach: { $slice: [2,1] } } ); #跳过前两元素的第一个元素 [ 3 ]
+db.fruit.find( {}, { peach: { $slice: [-2,2] } } ) #[6,7]
