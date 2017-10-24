@@ -50,9 +50,6 @@ db.users.find( { amount: { $exists: false } } )       #但是若整个库中不�
 db.users.find({age:{$mod:[4,0]}})
 db.users.find({$where: "this.age % 4 == 0"}) #会返回null 值
 
-
-#regex正则表达式的匹配
-
 #按长度查询
 db.users.find({tags:{$size:3}})                 #没有[] 不适用，必须制定一个定值，不能接受一个范围值，
  
