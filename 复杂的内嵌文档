@@ -1,0 +1,46 @@
+###操作符###
+$elemMatch
+
+
+###upload data###
+db.sc.remove({})
+db.sc.insert({
+ _id: 1,
+ zipcode: 63109,
+ students: [
+              { name: "john", school: 102, age: 10 },
+              { name: "jess", school: 102, age: 11 },
+              { name: "jeff", school: 108, age: 15 }
+           ]
+})
+db.sc.insert({
+ _id: 2,
+ zipcode: 63110,
+ students: [
+              { name: "ajax", school: 100, age: 7 },
+              { name: "achilles", school: 100, age: 8 },
+           ]
+})
+db.sc.insert({
+ _id: 3,
+ zipcode: 63109,
+ students: [
+              { name: "ajax", school: 100, age: 7 },
+              { name: "achilles", school: 100, age: 8 },
+           ]
+})
+db.sc.insert({
+ _id: 4,
+ zipcode: 63109,
+ students: [
+              { name: "barney", school: 102, age: 7 },
+           ]
+})
+###show the data###
+db.sc.find()
+
+###
+#下面的操作将查询邮政编码键值是63109的所有文档。 $elemMatch操作符将返回 students数组中的第一个匹配条件（内嵌文档的school键且值为102）的元素。
+db.sc.find( { zipcode: 63109 },{ students: { $elemMatch: { school: 102 } } } ); #两个条件是一个或的返回式，并且只返回后一个匹配字段
+db.sc.find( { students: { $elemMatch: { school: 102 } } )
+
